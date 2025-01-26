@@ -27,6 +27,21 @@ namespace CalculatorEngine
                         output.Add(previousToken);
                         nextTokenString.Clear();
                     }
+                    else if (currentChar == '-')
+                    {
+                        if (output.Count == 0)
+                        {
+                            output.Add(new Token("0"));
+                        }
+                        var previousToken = output.Last();
+                        if (previousToken.IsOperator == true)
+                        {
+                            if (previousToken.OperatorValue == OperatorType.CloseBracket || previousToken.OperatorValue == OperatorType.Factorial)
+                            {
+                                output.Add(new Token("0"));
+                            }
+                        }
+                    }
                     var nextToken = new Token(currentChar.ToString());
                     output.Add(nextToken);
                 }

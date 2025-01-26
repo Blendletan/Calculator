@@ -10,6 +10,10 @@ namespace CalculatorEngine
     {
         public static BigInteger Factorial(BigInteger input)
         {
+            if (input < 0)
+            {
+                throw new Exception("Cannot take factorial of negative number");
+            }
             BigInteger output = 1;
             for (BigInteger i = 1; i <= input; i++)
             {
