@@ -8,11 +8,19 @@ namespace CalculatorEngine
 {
     internal class Processor
     {
-        public static BigInteger Factorial(BigInteger input)
+        private static BigRational Factorial(BigRational input)
+        {
+            if (input.denominator == 1)
+            {
+                return new BigRational(Factorial(input.numerator),1);
+            }
+            throw new Exception($"Error: Cannot take factorial of the fraction {input.numerator} / {input.denominator}");
+        }
+        private static BigInteger Factorial(BigInteger input)
         {
             if (input < 0)
             {
-                throw new Exception("Cannot take factorial of negative number");
+                throw new Exception($"Cannot take the factorial of negative number {input}");
             }
             BigInteger output = 1;
             for (BigInteger i = 1; i <= input; i++)
@@ -21,9 +29,9 @@ namespace CalculatorEngine
             }
             return output;
         }
-        public static BigInteger? Evaluate(List<Token> input)
+        public static BigRational? Evaluate(List<Token> input)
         {
-            Stack<BigInteger> numberStack = new Stack<BigInteger>();
+            Stack<BigRational> numberStack = new Stack<BigRational>();
             foreach (var nextToken in input)
             {
                 if (nextToken.IsOperator == false)
@@ -32,7 +40,7 @@ namespace CalculatorEngine
                     {
                         throw new Exception("Invalid token: declared as integer but has no integer value");
                     }
-                    numberStack.Push(nextToken.IntegerValue.Value);
+                    numberStack.Push(nextToken.IntegerValue);
                     continue;
                 }
                 if (nextToken.OperatorValue == null)
@@ -59,19 +67,19 @@ namespace CalculatorEngine
                 var x = numberStack.Pop();
                 if (nextOperator == OperatorType.Add)
                 {
-                    numberStack.Push(x + y);
+                    numberStack.Push(BigRational.Add(x,y));
                 }
                 else if (nextOperator == OperatorType.Subtract)
                 {
-                    numberStack.Push(x - y);
+                    numberStack.Push(BigRational.Subtract(x,y));
                 }
                 else if (nextOperator == OperatorType.Multiply)
                 {
-                    numberStack.Push(x * y);
+                    numberStack.Push(BigRational.Multiply(x,y));
                 }
                 else if (nextOperator == OperatorType.Divide)
                 {
-                    numberStack.Push(x / y);
+                    numberStack.Push(BigRational.Divide(x,y));
                 }
                 else
                 {

@@ -8,7 +8,7 @@ namespace CalculatorEngine
 {
     public class Calculator
     {
-        public static BigInteger? Calculate(string input)
+        public static BigRational? Calculate(string input)
         {
             List<Token>? tokens = Tokenizer.Tokenize(input);
             if (tokens == null)
@@ -20,7 +20,7 @@ namespace CalculatorEngine
             {
                 return null;
             }
-            BigInteger? output = Processor.Evaluate(reversePolishTokens);
+            BigRational? output = Processor.Evaluate(reversePolishTokens);
             return output;
         }
     }

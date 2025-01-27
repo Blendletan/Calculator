@@ -9,25 +9,20 @@ namespace CalculatorEngine
     internal class Token
     {
         public readonly bool IsOperator;
-        public readonly BigInteger? IntegerValue;
+        public readonly BigRational? IntegerValue;
         public readonly OperatorType? OperatorValue;
         public Token(string s)
         {
-            IsOperator = false;
-            BigInteger value;
-            if (BigInteger.TryParse(s, out value))
+            IsOperator = true;
+            IntegerValue = null;
+            OperatorValue = GetOperator(s);
+            if (OperatorValue == null)
             {
-                IntegerValue = value;
-                OperatorValue = null;
-            }
-            else
-            {
-                IsOperator = true;
-                OperatorValue = GetOperator(s);
-                IntegerValue = null;
+                IsOperator = false;
+                IntegerValue = new BigRational(s);
             }
         }
-        private static OperatorType GetOperator(string s)
+        private static OperatorType? GetOperator(string s)
         {
             switch (s)
             {
@@ -48,7 +43,7 @@ namespace CalculatorEngine
                 case "!":
                     return OperatorType.Factorial;
                 default:
-                    throw new Exception($"Unrecognized operator type {s}");
+                    return null;
             };
         }
     }

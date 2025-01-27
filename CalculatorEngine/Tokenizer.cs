@@ -15,7 +15,7 @@ namespace CalculatorEngine
                 {
                     continue;
                 }
-                else if (char.IsDigit(currentChar))
+                else if (char.IsDigit(currentChar) || currentChar =='.')
                 {
                     nextTokenString.Append(currentChar);
                 }
@@ -31,14 +31,18 @@ namespace CalculatorEngine
                     {
                         if (output.Count == 0)
                         {
-                            output.Add(new Token("0"));
+                            nextTokenString.Append('-');
+                            continue;
                         }
                         var previousToken = output.Last();
                         if (previousToken.IsOperator == true)
                         {
                             if (previousToken.OperatorValue == OperatorType.CloseBracket || previousToken.OperatorValue == OperatorType.Factorial)
+                            { }
+                            else
                             {
-                                output.Add(new Token("0"));
+                                nextTokenString.Append('-');
+                                continue;
                             }
                         }
                     }

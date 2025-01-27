@@ -1,24 +1,56 @@
-﻿using System.Numerics;
+﻿using CalculatorEngine;
+using System.Numerics;
 using System.Text;
-namespace Calculator
+namespace CalculatorConsole
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            string? input = Console.ReadLine();
-            while (input == null)
+            while (true)
             {
-                input = Console.ReadLine();
+                Calculate();
             }
-            BigInteger? output = CalculatorEngine.Calculator.Calculate(input);
-            if (output == null)
+        }
+        static string GetInput()
+        {
+            string? output = Console.ReadLine();
+            while (output == null)
             {
-                Console.WriteLine("Error, invalid format");
+                output = Console.ReadLine();
+            }
+            return output;
+        }
+        static void PrintOutput(BigRational output)
+        {
+            if (output.denominator == 1)
+            {
+                Console.WriteLine(output.numerator);
             }
             else
             {
-                Console.WriteLine(output);
+                Console.WriteLine($"{output.numerator} / {output.denominator}");
+            }
+        }
+        static void Calculate()
+        {
+            string input = GetInput();
+            try
+            {
+                BigRational? output = Calculator.Calculate(input);
+                if (output == null)
+                {
+                    Console.WriteLine("Error: invalid format");
+                }
+                else
+                {
+                    PrintOutput(output);
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
     }
